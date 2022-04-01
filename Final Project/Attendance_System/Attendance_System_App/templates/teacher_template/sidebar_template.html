@@ -1,0 +1,124 @@
+{% load static %}
+  <aside class="main-sidebar sidebar-light-success elevation-4">
+
+    <!-- Brand Logo -->
+    <a href="" class="brand-link">
+      <img src="{% static "/dist/image/hck_logo.png" %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">Attendance System</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{% static "dist/img/User.jpg" %}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="{% url 'teacher_profile' %}" class="d-block">{{ user.first_name }}</a>
+        </div>
+      </div>
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column nav-legacy text-sm" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+<!--          Teachers-->
+          <li class="nav-item">
+            {% url 'teacher_home' as teacher_home %}
+            <a href="{% url 'teacher_home' %}" class="nav-link {% if request.path == teacher_home %} active {% endif %}">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Home
+              </p>
+            </a>
+          </li>
+          <!--          face recognition-->
+          <li class="nav-item">
+            {% url 'teacher_take_attendance_face' as teacher_take_attendance_face %}
+            <a href="{{ teacher_take_attendance_face }}" class="nav-link {% if request.path == teacher_take_attendance_face %} active {% endif %}">
+              <i class="nav-icon far fa-image"></i>
+              <p>
+                Attendance via Face Recognition
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'teacher_take_attendance' as teacher_take_attendance %}
+            <a href="{{ teacher_take_attendance }}" class="nav-link {% if request.path == teacher_take_attendance %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Take Attendance Manually
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'teacher_update_attendance' as teacher_update_attendance %}
+            <a href="{{ teacher_update_attendance }}" class="nav-link {% if request.path == teacher_update_attendance %} active {% endif %}">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                View Update Attendance
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'student_leave_view1' as student_leave_view1 %}
+            <a href="{{ student_leave_view1 }}" class="nav-link {% if request.path == student_leave_view1 %} active {% endif %}">
+              <i class="nav-icon far fa-circle text-danger"></i>
+              <p>
+                Student Leave
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'teacher_apply_leave' as teacher_apply_leave %}
+            <a href="{{ teacher_apply_leave }}" class="nav-link {% if request.path == teacher_apply_leave %} active {% endif %} ">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Apply Leave
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'teacher_feedback' as teacher_feedback %}
+            <a href="{{ teacher_feedback }}" class="nav-link {% if request.path == teacher_feedback %} active {% endif %}">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Feedback
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'teacher_add_result' as teacher_add_result %}
+            <a href="{{ teacher_add_result }}" class="nav-link {% if request.path == teacher_add_result %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Add Result
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            {% url 'edit_student_result' as edit_student_result %}
+            <a href="{{ edit_student_result }}" class="nav-link {% if request.path == edit_student_result %} active {% endif %}">
+              <i class="nav-icon fas fa-edit"></i>
+              <p>
+                Edit Result
+              </p>
+            </a>
+          </li>
+<!--           <li class="nav-item">-->
+<!--            {% url 'teacher_all_notification' as teacher_all_notification %}-->
+<!--            <a href="{{ teacher_all_notification }}" class="nav-link {% if request.path == teacher_all_notification %} active {% endif %}">-->
+<!--              <i class="nav-icon fas fa-th"></i>-->
+<!--              <p>-->
+<!--                Notifications-->
+<!--              </p>-->
+<!--            </a>-->
+<!--          </li>-->
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+

@@ -1,0 +1,60 @@
+{% load static %}
+  <aside class="main-sidebar sidebar-light-success elevation-4">
+    <!-- Brand Logo -->
+    <a href="" class="brand-link">
+      <img src="{% static 'dist/image/student_log.jpg' %}" alt="" class="brand-image img-circle elevation-3"
+           style="opacity: .8">
+      <span class="brand-text font-weight-light">Attendance System</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{% static 'dist/img/User.jpg' %}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="{% url 'studentservicestaff_profile' %}" class="d-block">{{ user.first_name }}</a>
+        </div>
+      </div>
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column nav-legacy text-sm" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+<!--          Teachers-->
+          <li class="nav-item">
+            {% url 'studentservicestaff_home' as studentservicestaff_home %}
+            <a href="{% url 'studentservicestaff_home' %}" class="nav-link {% if request.path == studentservicestaff_home %} active {% endif %}">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Home
+              </p>
+            </a>
+          </li>
+          <!--          Student Feedbacks-->
+          <li class="nav-item">
+             {% url 'student_feedback_message_sss' as student_feedback_message_sss %}
+            <a href="{% url 'student_feedback_message_sss' %}" class="nav-link {% if request.path == student_feedback_message_sss %} active {% endif %}">
+              <i class="nav-icon far fa-circle text-danger"></i>
+              <p>
+                Student Feedback
+              </p>
+            </a>
+          </li>
+          <!--          Attendance Report-->
+          <li class="nav-item">
+            {% url 'sss_view_attendance' as sss_view_attendance %}
+             <a href="{% url 'sss_view_attendance' %}" class="nav-link {% if request.path == sss_view_attendance %} active {% endif %}">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                View Attendance
+              </p>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
