@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-
 from pathlib import Path
 import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -85,7 +84,6 @@ DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
-
         # Mysql database setup
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'attendance_system',
@@ -145,8 +143,6 @@ DEFAULT_FROM_EMAIL = "Attendance System <vickykr26941@gmail.com>"
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 # github personal key : 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
-
-
 # staff user : vkkr125@gmail.com
 # username : vickykr26941
 # password : vickykr123@
@@ -171,4 +167,3 @@ DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 # email : shubhamche99@gmail.com
 # password : vickykr123@
 # username : shubhamche99
-

@@ -20,8 +20,7 @@ def doLogin(request):
     if request.method != "POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
     else:
-
-        # uncomment for google captcha
+        ## uncomment this line to apply google captch in login system
         # captcha_token=request.POST.get("g-recaptcha-response")
         # cap_url="https://www.google.com/recaptcha/api/siteverify"
         # cap_secret="6LfkArAaAAAAADp-yIkgGt-dPQypVV8cOnYGIYtB"

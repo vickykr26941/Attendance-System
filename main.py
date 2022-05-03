@@ -15,7 +15,7 @@ for cu_img in myList:
     personNames.append(os.path.splitext(cu_img)[0])
 print(personNames)
 
-
+# encode the images and push to the list
 def faceEncodings(images):
     encodeList = []
     for img in images:
@@ -25,6 +25,7 @@ def faceEncodings(images):
     return encodeList
 
 
+# mark attendance
 def attendance(name):
     with open('/home/vkkr125/programming/final_project/Attendance.csv', 'r+') as f:
         myDataList = f.readlines()
