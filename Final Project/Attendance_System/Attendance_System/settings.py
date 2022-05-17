@@ -136,34 +136,8 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_mails")
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = "587"
 EMAIL_HOST_USER = "vickykr26941@gmail.com"
-EMAIL_HOST_PASSWORD = "vickykr123@"
+EMAIL_HOST_PASSWORD = "put_your_password"
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "Attendance System <vickykr26941@gmail.com>"
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
-
-# github personal key : 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
-# staff user : vkkr125@gmail.com
-# username : vickykr26941
-# password : vickykr123@
-
-# admin username: vickykr125
-# email: vickykr26941@gmail.com
-# passowrd : vickykr123@
-
-
-
-# login as admin
-# admin username : vickykumar
-# admin password : vickykr123@
-# admin email : rakeshkr26941@gmail.com
-
-# admin page :working fine 
-# studentservicestaffpage : working fine 
-# teacher page : error
-# studetn page : working fine
-
-# student : 
-# email : shubhamche99@gmail.com
-# password : vickykr123@
-# username : shubhamche99
