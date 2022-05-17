@@ -31,9 +31,12 @@ def doLogin(request):
         # if cap_json['success'] == False:
         #     messages.error(request, "Invalid Captcha Try Again")
         #     return HttpResponseRedirect("/")
-
+        print(request.POST.get('email'))
         user = EmailBackEnd.authenticate(request, username=request.POST.get("email"),
                                          password=request.POST.get("password"))
+        # if(user.size() > 0) : 
+        #     return HttpResponse('Too Many Users with the same email')
+
         if user != None:
             login(request, user)
             if user.user_type == "1":
@@ -80,6 +83,7 @@ def register_admin(request):
 
 def register_teacher(request):
     return render(request,"register_teacher_page.html")
+
 
 def do_register_teacher(request):
     username=request.POST.get("username")

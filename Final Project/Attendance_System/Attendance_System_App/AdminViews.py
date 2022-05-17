@@ -630,6 +630,7 @@ def admin_profile_save(request):
         except:
             messages.error(request, "Failed to Update Profile")
             return HttpResponseRedirect(reverse("admin_profile"))
+            
 #
 # def admin_send_notification_student(request):
 #     students=Students.objects.all()

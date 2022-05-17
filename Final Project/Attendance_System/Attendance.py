@@ -52,13 +52,11 @@ def markAttendance(name):
 
 while True:
     success, img = cap.read()
-
     # because its real time capture, i will reduce the size of image to speed up the process
     imgS = cv2.resize(img, (0, 0), None, 0.25, 0.25)
 
     # realtime image size has been divided by 4 using 0.25 and converting into RGB
     imgS = cv2.cvtColor(imgS, cv2.COLOR_BGR2RGB)
-
     facesCurFrame = face_recognition.face_locations(imgS) # faces from the web cam
     encodeCurFrame = face_recognition.face_encodings(imgS, facesCurFrame) # encode the faces found
 
@@ -67,10 +65,8 @@ while True:
         matches = face_recognition.compare_faces(encodeListKnown, encodeFace)
         faceDis = face_recognition.face_distance(encodeListKnown, encodeFace)
         #print(faceDis)
-
         matchIndex = np.argmin(faceDis) # matching the array from th previous
         # print('matchIndex', matchIndex)
-
         # Printing the images name and creating a bounding box in the image
         if matches[matchIndex]:
             name = studentNames[matchIndex].upper()

@@ -31,7 +31,7 @@ class AddStudentForm(forms.Form):
             course_list.append(small_course)
     except:
         course_list = []
-
+        
     session_list = []
     try:
         sessions = SessionYearModel.object.all()
