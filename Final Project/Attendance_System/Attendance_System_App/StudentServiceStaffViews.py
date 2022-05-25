@@ -12,7 +12,6 @@ from Attendance_System_App.models import Students, Teachers, Courses, LeaveRepor
 
 
 def studentservicestaff_home(request):
-
     student_count1 = Students.objects.all().count()
     teacher_count = Teachers.objects.all().count()
     subject_count = Subjects.objects.all().count()

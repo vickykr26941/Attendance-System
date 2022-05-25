@@ -136,7 +136,7 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_mails")
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = "587"
 EMAIL_HOST_USER = "vickykr26941@gmail.com"
-EMAIL_HOST_PASSWORD = "put_your_password"
+EMAIL_HOST_PASSWORD = "vickykr123@"
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = "Attendance System <vickykr26941@gmail.com>"
 

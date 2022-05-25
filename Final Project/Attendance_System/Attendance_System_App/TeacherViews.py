@@ -357,9 +357,122 @@ def internal(request):
     # Assign to string
     #html_file = (df.to_html(classes='table table-striped'))
     return render(request, 'teacher_template/teacher_take_attendance_face.html')
-
+    
 def readcsv(request):
-
     return render(request, 'teacher_template/Attendance.html')
 
-    #return render('C:/Users/dell/PycharmProjects/Final-Year-Project/Attendance_System/Attendance.csv')
+def attendance_by_date(date):
+    attendance_date = date
+    attendance = Attendance.objects.get(id=attendance_date)
+    attendance_data = AttendanceReport.objects.filter(attendance_id=attendance)
+    list_data = []
+
+    for student in attendance_data:
+        data_small = {"id": student.student_id.admin.id,
+                      "name": student.student_id.admin.first_name + " " + student.student_id.admin.last_name,
+                      "status": student.status}
+        list_data.append(data_small)
+    return list_data
+
+
+# preprocess the student data and put it into the .csv file
+def get_attendance_by_subject(subject):
+       # For Fetch All Student Under Teacher
+    session_year_id = SessionYearModel.object.all()[0].id
+    # print(session_year_id)
+    subject_obj = Subjects.objects.get(id=subject)
+    session_year_obj = SessionYearModel.object.get(id=session_year_id)
+    attendance = Attendance.objects.filter(subject_id=subject_obj, session_year_id=session_year_obj)
+    
+    # attendance_single.attendance_date
+    student_present_attendance_data = {}
+    for attendance_single in attendance:
+        list_data = attendance_by_date(attendance_single.id)
+        for student_data in list_data : 
+            # print(student_data['name'])
+            if student_data['name'] in student_present_attendance_data:
+                if student_data['status'] :
+                    student_present_attendance_data[student_data['name']] += 1
+            else:
+                student_present_attendance_data[student_data['name']] = 0
+    
+    student_absent_attendance_data = {}
+    for attendance_single in attendance:
+        list_data = attendance_by_date(attendance_single.id)
+        for student_data in list_data : 
+            # print(student_data['name'])
+            if student_data['name'] in student_absent_attendance_data:
+                if not student_data['status'] :
+                    student_absent_attendance_data[student_data['name']] += 1
+            else:
+                student_absent_attendance_data[student_data['name']] = 0
+    
+    return (student_present_attendance_data, student_absent_attendance_data)
+
+def student_data_preprocessiong(request):
+    subjects = Subjects.objects.filter(teacher_id=request.user.id)
+    first_row = 'Student Name '
+    for subject in subjects:
+        first_row = first_row + ',' + subject.subject_name.split(' ')[0] + ' Attendance'
+    for subject in subjects:
+        first_row = first_row + ',' + subject.subject_name.split(' ')[0] + ' Total Classes'
+
+    # print(first_row)
+    with open('/home/vkkr125/programming/final_project/student_info_data.csv', 'r+') as f:
+        f.writelines(first_row)
+
+        subject_to_student_data = {}
+        for subject in subjects:
+            student_data_values_by_subject = get_attendance_by_subject(subject.id)
+            keys = list(student_data_values_by_subject[0].keys())
+            values1 = list(student_data_values_by_subject[0].values())
+            values2 = list(student_data_values_by_subject[1].values())
+
+            for i in range(0, len(keys)):
+                if keys[i] in subject_to_student_data:
+                    subject_to_student_data[keys[i]].append((subject.subject_name,values1[i],values2[i]))
+                else:
+                    subject_to_student_data[keys[i]] = [(subject.subject_name,values1[i], values2[i])]
+        
+        final_data = []
+        for key in subject_to_student_data.keys():
+            current_row = ''
+            current_row += key 
+            for value in subject_to_student_data[key]:
+                current_row = current_row + ',' + str(value[1])
+
+            for value in subject_to_student_data[key]:
+                val = (value[1] + value[2])
+                current_row = current_row + ',' + str(val) 
+
+            f.writelines('\n' + current_row)
+            # print(current_row)
+
+
+    # get_attendance_by_subject(subjects[0].id)
+    return first_row
+    # data = []
+    # for subject in subjects:
+    #     value = get_attendance_by_subject(subject)
+    #     data.append(value)
+    # print(data)
+
+# fetch student attandance information and show the result in in excel format
+def student_info_data(request):
+    rows_data = student_data_preprocessiong(request)
+    df = pd.read_csv("/home/vkkr125/programming/final_project/student_info_data.csv")
+    # print(rows_data.split(','))
+    # parsing the DataFrame in json format.
+    json_records = df.reset_index().to_json(orient ='records')
+    data = []
+    data = json.loads(json_records)
+    context = {
+        'd': data,
+        'rows' : rows_data.split(',')
+        }
+    # print(data)
+
+    df.to_html('Attendance_System_App/templates/teacher_template/student_info_data.html')
+    return render(request, 'teacher_template/student_info_data.html')
+    
+    # return render(request, 'teacher_template/student_attendance_data.html', context)

@@ -89,6 +89,7 @@ urlpatterns = [
     path('teacher_take_attendance_face', TeacherViews.teacher_take_attendance_face, name="teacher_take_attendance_face"),
     re_path(r'^external', TeacherViews.external,name="script"), #face recogntion url and func in Teachersview
     re_path(r'^internal', TeacherViews.internal, name="button"),
+    path('student_info_data', TeacherViews.student_info_data, name='student_info_data'),
 
     path('readcsv', TeacherViews.readcsv, name="readcsv"),
 
@@ -135,3 +136,4 @@ urlpatterns = [
     path('testurl',views.Testurl),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.signals import post_save
@@ -67,6 +68,7 @@ class Students(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     gender = models.CharField(max_length=255)
     profile_pic = models.FileField()  # until the face recognition system is added the profile pic section will be here
+    # profile_pic = models.ImageField(upload_to='images', null=True, blank=True)
     address = models.TextField()
     course_id = models.ForeignKey(Courses, on_delete=models.DO_NOTHING)
     session_year_id = models.ForeignKey(SessionYearModel, on_delete=models.CASCADE)

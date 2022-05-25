@@ -685,3 +685,4 @@ def admin_profile_save(request):
 #     notification.save()
 #     print(data.text)
 #     return HttpResponse("True")
+
