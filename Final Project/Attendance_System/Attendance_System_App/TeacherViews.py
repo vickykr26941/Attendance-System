@@ -1,9 +1,9 @@
 import json
+from lib2to3.pytree import Base
 import os
 import sys
 from datetime import datetime
 from django.contrib import messages
-
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
@@ -18,6 +18,8 @@ from subprocess import run, PIPE
 
 import pandas as pd
 from tabulate import tabulate
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def teacher_home(request):
@@ -321,7 +323,6 @@ def save_student_result(request):
         messages.error(request, "Failed to Add Result")
         return HttpResponseRedirect(reverse("teacher_add_result"))
 
-
 @csrf_exempt
 def fetch_result_student(request):
     subject_id = request.POST.get('subject_id')
@@ -338,10 +339,12 @@ def fetch_result_student(request):
 
 # func for running python script file from the external system storage
 def external(request):
+
     # path of attendance.py file
-    out = run([sys.executable, '/home/vkkr125/programming/final_project/main.py'],
+    path = BASE_DIR + '/Attendance.py'
+    out = run([sys.executable, path],
               shell=False, stdout=PIPE)
-    print(out.stdout)
+    # print(out.stdout)
     # return HttpResponseRedirect("external")
     return render(request, 'teacher_template/teacher_take_attendance_face.html')
 
@@ -349,10 +352,11 @@ def external(request):
 #Using Pandas dataframe
 def internal(request):
     # Read the csv file in
-    df = pd.read_csv('/home/vkkr125/programming/final_project/Attendance.csv')
-
+    csv_file_path = BASE_DIR + '/Attendance.csv'
+    df = pd.read_csv(csv_file_path)
     # Save to file
-    df.to_html('Attendance_System_App/templates/teacher_template/Attendance.html')
+    html_template_path = BASE_DIR + '/templates/teacher_template/Attendance.html'
+    df.to_html(html_template_path)
 
     # Assign to string
     #html_file = (df.to_html(classes='table table-striped'))
@@ -414,12 +418,11 @@ def student_data_preprocessiong(request):
     first_row = 'Student Name '
     for subject in subjects:
         first_row = first_row + ',' + subject.subject_name.split(' ')[0] + ' Attendance'
-    for subject in subjects:
-        first_row = first_row + ',' + subject.subject_name.split(' ')[0] + ' Total Classes'
-
     # print(first_row)
-    with open('/home/vkkr125/programming/final_project/student_info_data.csv', 'r+') as f:
-        f.writelines(first_row)
+    
+    student_data_csv_path = BASE_DIR + '/student_info_data.csv'
+    with open(student_data_csv_path, 'r+') as f:
+        # f.writelines(first_row)
 
         subject_to_student_data = {}
         for subject in subjects:
@@ -435,6 +438,7 @@ def student_data_preprocessiong(request):
                     subject_to_student_data[keys[i]] = [(subject.subject_name,values1[i], values2[i])]
         
         final_data = []
+        subject_to_total_classes = {}
         for key in subject_to_student_data.keys():
             current_row = ''
             current_row += key 
@@ -442,37 +446,33 @@ def student_data_preprocessiong(request):
                 current_row = current_row + ',' + str(value[1])
 
             for value in subject_to_student_data[key]:
-                val = (value[1] + value[2])
-                current_row = current_row + ',' + str(val) 
-
-            f.writelines('\n' + current_row)
-            # print(current_row)
-
-
-    # get_attendance_by_subject(subjects[0].id)
+                if value[0].split(' ')[0] in subject_to_total_classes:
+                    subject_to_total_classes[value[0].split(' ')[0]] = max(subject_to_total_classes[value[0].split(' ')[0]], (value[1] + value[2]))
+                else:
+                    subject_to_total_classes[value[0].split(' ')[0]] = (value[1] + value[2])
+            
+            # f.writelines('\n' + current_row)
+            final_data.append(current_row)
+        
+        final_first_row = 'Student Name'
+        for col in first_row.split(','):
+            if col.split(' ')[0] in subject_to_total_classes:
+                final_first_row = final_first_row + ',' + col +  '(' + str(subject_to_total_classes[col.split(' ')[0]]) + ')'
+        f.writelines(final_first_row)
+        for data in final_data :
+            f.writelines('\n' + data)
+        
+        print(subject_to_total_classes)
+           
     return first_row
-    # data = []
-    # for subject in subjects:
-    #     value = get_attendance_by_subject(subject)
-    #     data.append(value)
-    # print(data)
+  
 
 # fetch student attandance information and show the result in in excel format
 def student_info_data(request):
     rows_data = student_data_preprocessiong(request)
-    df = pd.read_csv("/home/vkkr125/programming/final_project/student_info_data.csv")
-    # print(rows_data.split(','))
-    # parsing the DataFrame in json format.
-    json_records = df.reset_index().to_json(orient ='records')
-    data = []
-    data = json.loads(json_records)
-    context = {
-        'd': data,
-        'rows' : rows_data.split(',')
-        }
-    # print(data)
+    student_csv_data_path = BASE_DIR + '/student_info_data.csv'
+    df = pd.read_csv(student_csv_data_path)
 
-    df.to_html('Attendance_System_App/templates/teacher_template/student_info_data.html')
+    student_data_template = BASE_DIR + '/templates/teacher_template/student_info_data.html'
+    df.to_html(student_data_template)
     return render(request, 'teacher_template/student_info_data.html')
-    
-    # return render(request, 'teacher_template/student_attendance_data.html', context)

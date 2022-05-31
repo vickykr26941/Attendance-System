@@ -3,87 +3,82 @@ import numpy as np
 import face_recognition
 import os
 from datetime import datetime
+import os
+CUR_DIR = os.path.abspath(os.path.dirname(__file__))   # get current directory
 
-path = 'media'
+path = CUR_DIR + '/images'
+# path = '/home/vkkr125/programming/final_project/Final Project/Attendance_System/images'
 images = []
-studentNames = []
+personNames = []
+
 myList = os.listdir(path)
 print(myList)
-for cl in myList:
-    curImg = cv2.imread(f'{path}/{cl}')
-    images.append(curImg)
-    studentNames.append(os.path.splitext(cl)[0])
-print(studentNames)
+for cu_img in myList:
+    current_Img = cv2.imread(f'{path}/{cu_img}')
+    images.append(current_Img)
+    personNames.append(os.path.splitext(cu_img)[0])
+print(personNames)
 
-
-# converting the images into RGB and finding the encodings
-def findEncodings(images):
+# encode the images and push to the list
+def faceEncodings(images):
     encodeList = []
     for img in images:
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # covert to RGB
-        encode = face_recognition.face_encodings(img)[0]  # finding the encodings
-        encodeList.append(encode)  # append to our empty list
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        encode = face_recognition.face_encodings(img)[0]
+        encodeList.append(encode)
     return encodeList
 
 
-encodeListKnown = findEncodings(images)
-print('Encoding Completed')
+# mark attendance
+def attendance(name):
 
-cap = cv2.VideoCapture(0)  # initializing the web camera
-
-
-# marking the attendance in csv file
-def markAttendance(name):
-    with open('Attendance_System_App/templates/teacher_template/Attendance.csv', 'r+') as f:
+    attendance_csv_path = CUR_DIR + '/Attendance.csv'
+    # attendance_csv_path = '/home/vkkr125/programming/final_project/Final Project/Attendance_System/Attendance.csv'
+    with open(attendance_csv_path, 'r+') as f:
         myDataList = f.readlines()
         nameList = []
-        Text = 'PRESENT'
-        Text0 = 'RECOGNIZED'
         for line in myDataList:
             entry = line.split(',')
             nameList.append(entry[0])
         if name not in nameList:
-            now = datetime.now()
-            dtString = now.strftime('%d-%m-%Y')
-            dtString1 = now.strftime('%H:%M:%S')
-            print(Text)
-            f.writelines(f'\n{name},{dtString},{dtString1},{Text},{Text0}')
+            time_now = datetime.now()
+            tStr = time_now.strftime('%H:%M:%S')
+            dStr = time_now.strftime('%d/%m/%Y')
+            f.writelines(f'\n{name},{tStr},{dStr}')
 
+
+encodeListKnown = faceEncodings(images)
+print('All Encodings Complete!!!')
+
+cap = cv2.VideoCapture(0)
 
 while True:
-    success, img = cap.read()
-    # because its real time capture, i will reduce the size of image to speed up the process
-    imgS = cv2.resize(img, (0, 0), None, 0.25, 0.25)
+    ret, frame = cap.read()
+    faces = cv2.resize(frame, (0, 0), None, 0.25, 0.25)
+    faces = cv2.cvtColor(faces, cv2.COLOR_BGR2RGB)
 
-    # realtime image size has been divided by 4 using 0.25 and converting into RGB
-    imgS = cv2.cvtColor(imgS, cv2.COLOR_BGR2RGB)
-    facesCurFrame = face_recognition.face_locations(imgS) # faces from the web cam
-    encodeCurFrame = face_recognition.face_encodings(imgS, facesCurFrame) # encode the faces found
+    facesCurrentFrame = face_recognition.face_locations(faces)
+    encodesCurrentFrame = face_recognition.face_encodings(faces, facesCurrentFrame)
 
-    # Now matching the encoding with the previous one
-    for encodeFace, faceLoc in zip(encodeCurFrame, facesCurFrame):
+    for encodeFace, faceLoc in zip(encodesCurrentFrame, facesCurrentFrame):
         matches = face_recognition.compare_faces(encodeListKnown, encodeFace)
         faceDis = face_recognition.face_distance(encodeListKnown, encodeFace)
-        #print(faceDis)
-        matchIndex = np.argmin(faceDis) # matching the array from th previous
-        # print('matchIndex', matchIndex)
-        # Printing the images name and creating a bounding box in the image
+        # print(faceDis)
+        matchIndex = np.argmin(faceDis)
+
         if matches[matchIndex]:
-            name = studentNames[matchIndex].upper()
+            name = personNames[matchIndex].upper()
             # print(name)
             y1, x2, y2, x1 = faceLoc
             y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
-            cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            cv2.rectangle(img, (x1, y2 - 35), (x2, y2), (0, 0, 0), cv2.FILLED)
-            cv2.putText(img, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 255), 2)
-            markAttendance(name)
+            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.rectangle(frame, (x1, y2 - 35), (x2, y2), (0, 255, 0), cv2.FILLED)
+            cv2.putText(frame, name, (x1 + 6, y2 - 6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
+            attendance(name)
 
-    cv2.imshow('Webcam', img)
-    # press 'esc' to close program
-    if cv2.waitKey(1) == 27:
+    cv2.imshow('Webcam', frame)
+    if cv2.waitKey(1) == 13:
         break
 
-# release camera
 cap.release()
 cv2.destroyAllWindows()
-

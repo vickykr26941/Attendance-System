@@ -121,7 +121,6 @@ View Attendance
         $("#fetch_student").click(function(){
 
             var attendance_date=$("#attendance_date").val()
-
             $.ajax({
                 url:'{% url 'sss_get_attendance_student' %}',
                 type:'POST',

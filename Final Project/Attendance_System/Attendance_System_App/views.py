@@ -8,7 +8,6 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from Attendance_System_App.EmailBackEnd import EmailBackEnd
-
 from Attendance_System_App.models import CustomUser, Courses, SessionYearModel
 
 

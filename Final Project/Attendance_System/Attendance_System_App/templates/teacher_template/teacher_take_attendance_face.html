@@ -83,23 +83,18 @@ Attendance via Face Recognition System
            dataType:"text",
            async: false,
            
-        success: function(data)
-        {
+        success: function(data){
             var attendance_data = data.split(/\r?\n|\r/);
             var table_data = '<table class="table table-bordered table-striped">';
 
-            for(var count = 0; count<attendance_data.length; count++)
-            {
+            for(var count = 0; count<attendance_data.length; count++){
                 var cell_data = attendance_data[count].split(",");
                 table_data += '<tr>';
-                for(var cell_count=0; cell_count<cell_data.length; cell_count++)
-                {
-                    if(count === 0)
-                    {
+                for(var cell_count=0; cell_count<cell_data.length; cell_count++){
+                    if(count === 0){
                         table_data += '<th>'+cell_data[cell_count]+'</th>';
                     }
-                    else
-                    {
+                    else{
                         table_data += '<td>'+cell_data[cell_count]+'</td>';
                     }
                 }
