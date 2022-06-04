@@ -8,7 +8,6 @@ from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-
 from Attendance_System_App.models import Teachers, LeaveReportTeachers, LeaveReportStudents, FeedBackTeachers, Students, \
     Attendance, AttendanceReport, Subjects, SessionYearModel, CustomUser
 
@@ -20,6 +19,8 @@ import pandas as pd
 from tabulate import tabulate
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CUR_DIR = os.path.abspath(os.path.dirname(__file__))   # get current directory
+
 
 
 def teacher_home(request):
@@ -355,7 +356,7 @@ def internal(request):
     csv_file_path = BASE_DIR + '/Attendance.csv'
     df = pd.read_csv(csv_file_path)
     # Save to file
-    html_template_path = BASE_DIR + '/templates/teacher_template/Attendance.html'
+    html_template_path = CUR_DIR + '/templates/teacher_template/Attendance.html'
     df.to_html(html_template_path)
 
     # Assign to string
@@ -473,6 +474,6 @@ def student_info_data(request):
     student_csv_data_path = BASE_DIR + '/student_info_data.csv'
     df = pd.read_csv(student_csv_data_path)
 
-    student_data_template = BASE_DIR + '/templates/teacher_template/student_info_data.html'
+    student_data_template = CUR_DIR + '/templates/teacher_template/student_info_data.html'
     df.to_html(student_data_template)
     return render(request, 'teacher_template/student_info_data.html')

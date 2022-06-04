@@ -1,9 +1,12 @@
 {% extends 'student_template/base_template.html' %}
 {% block page_title %}
-Leave Report and Apply for Leave
+{% if precent %}
+   Leave Report and Apply for Leave
+{% endif %}
 {% endblock page_title %}
 {% block main_content %}
     <!-- Main content -->
+    {% if precent %}
     <section class="content">
       <div class="container-fluid">
                     <div class="row">
@@ -89,5 +92,9 @@ Leave Report and Apply for Leave
           </div>
       </div>
     </section>
+       {% else %}
+        <h3>You Can't Apply For Leave Because Your Attendance Is Already Less The 75 %</h3>
+    {% endif %}
+
     <!-- /.content -->
 {% endblock main_content %}

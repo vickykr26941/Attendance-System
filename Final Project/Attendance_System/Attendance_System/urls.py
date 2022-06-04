@@ -25,6 +25,9 @@ from Attendance_System_App.EditResultView import EditResultViewClass
 
 
 urlpatterns = [
+
+
+    # utility urls
     path('register_student',views.register_student,name="register_student"),
     path('register_teacher',views.register_teacher,name="register_teacher"),
     path('register_studentservicestaff',views.register_studentservicestaff,name="register_studentservicestaff"),
@@ -53,15 +56,11 @@ urlpatterns = [
     path('manage_student_service_staff', AdminViews.manage_student_service_staff, name="manage_student_service_staff"),
     path('manage_course', AdminViews.manage_course, name="manage_course"),
     path('manage_subject', AdminViews.manage_subject, name="manage_subject"),
-    path('edit_teacher/<str:teacher_id>', AdminViews.edit_teacher, name="edit_teacher"),
     path('edit_teacher_save', AdminViews.edit_teacher_save, name="edit_teacher_save"),
     path('edit_student_service_staff/<str:studentservicestaff_id>', AdminViews.edit_student_service_staff, name="edit_student_service_staff"),
     path('edit_student_service_staff_save', AdminViews.edit_student_service_staff_save, name="edit_student_service_staff_save"),
-    path('edit_student/<str:student_id>', AdminViews.edit_student, name="edit_student"),
     path('edit_student_save', AdminViews.edit_student_save, name="edit_student_save"),
-    path('edit_subject/<str:subject_id>', AdminViews.edit_subject, name="edit_subject"),
     path('edit_subject_save', AdminViews.edit_subject_save, name="edit_subject_save"),
-    path('edit_course/<str:course_id>', AdminViews.edit_course, name="edit_course"),
     path('edit_course_save', AdminViews.edit_course_save, name="edit_course_save"),
     path('manage_session', AdminViews.manage_session, name="manage_session"),
     path('add_session_save', AdminViews.add_session_save, name="add_session_save"),
@@ -73,10 +72,19 @@ urlpatterns = [
     path('teacher_feedback_message_replied', AdminViews.teacher_feedback_message_replied, name="teacher_feedback_message_replied"),
     path('student_leave_view', AdminViews.student_leave_view, name="student_leave_view"),
     path('teacher_leave_view', AdminViews.teacher_leave_view, name="teacher_leave_view"),
+
+
+    # dynamic urls with Id's
+    path('edit_course/<str:course_id>', AdminViews.edit_course, name="edit_course"),
+    path('edit_subject/<str:subject_id>', AdminViews.edit_subject, name="edit_subject"),
+    path('edit_teacher/<str:teacher_id>', AdminViews.edit_teacher, name="edit_teacher"),
+    path('edit_student/<str:student_id>', AdminViews.edit_student, name="edit_student"),
     path('student_approve_leave/<str:leave_id>', AdminViews.student_approve_leave, name="student_approve_leave"),
     path('student_disapprove_leave/<str:leave_id>', AdminViews.student_disapprove_leave, name="student_disapprove_leave"),
     path('teacher_approve_leave/<str:leave_id>', AdminViews.teacher_approve_leave, name="teacher_approve_leave"),
     path('teacher_disapprove_leave/<str:leave_id>', AdminViews.teacher_disapprove_leave, name="teacher_disapprove_leave"),
+
+
     path('admin_view_attendance', AdminViews.admin_view_attendance, name="admin_view_attendance"),
     path('admin_get_attendance_dates', AdminViews.admin_get_attendance_dates, name="admin_get_attendance_dates"),
     path('admin_get_attendance_student', AdminViews.admin_get_attendance_student, name="admin_get_attendance_student"),

@@ -64,7 +64,24 @@ def student_view_attendance_post(request):
 def student_apply_leave(request):
     teacher_obj = Students.objects.get(admin=request.user.id)
     leave_data=LeaveReportStudents.objects.filter(student_id=teacher_obj)
-    return render(request,"student_template/student_apply_leave.html",{"leave_data":leave_data})
+    student_obj = Students.objects.get(admin=request.user.id)
+    attendance_total = AttendanceReport.objects.filter(student_id=student_obj).count()
+    attendance_present = AttendanceReport.objects.filter(student_id=student_obj, status=True).count()
+    attendance_absent = AttendanceReport.objects.filter(student_id=student_obj, status=False).count()
+
+    attendance_present_precent = 0.0
+    if attendance_total > 0:
+         attendance_present_precent = (attendance_present / attendance_total) * 100
+    print(attendance_present_precent)
+
+    greater_then_75_precent = False
+    if attendance_present_precent >= 75:
+        greater_then_75_precent = True 
+    context = {
+        'precent' : greater_then_75_precent,
+        'leave_data' : leave_data
+    }
+    return render(request,"student_template/student_apply_leave.html",context)
 
 def student_apply_leave_save(request):
     if request.method!="POST":

@@ -106,6 +106,15 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            {% url 'student_info_data' as student_info_data %}
+            <a href="{{ student_info_data }}" class="nav-link {% if request.path == student_info_data %} active {% endif %}">
+              <i class="nav-icon far fa-circle text-danger"></i>
+              <p>
+                Student Info
+              </p>
+            </a>
+          </li>
 <!--           <li class="nav-item">-->
 <!--            {% url 'teacher_all_notification' as teacher_all_notification %}-->
 <!--            <a href="{{ teacher_all_notification }}" class="nav-link {% if request.path == teacher_all_notification %} active {% endif %}">-->
