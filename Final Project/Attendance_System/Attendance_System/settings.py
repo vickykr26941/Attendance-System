@@ -94,6 +94,7 @@ DATABASES = {
     }
 }
 
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -126,7 +127,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = "Attendance_System_App.CustomUser"
-AUTHENTICATION_BACKENDS = ['Attendance_System_App.EmailBackEnd.EmailBackEnd']
+# AUTHENTICATION_BACKENDS = ['Attendance_System_App.EmailBackEnd.EmailBackEnd']
+
+AUTHENTICATION_BACKENDS = (
+    ('django.contrib.auth.backends.ModelBackend'),
+    # ('Attendance_System_App.EmailBackEnd.EmailBackEnd'),
+)
+
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_mails")
