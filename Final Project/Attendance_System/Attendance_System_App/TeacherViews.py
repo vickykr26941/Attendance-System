@@ -440,6 +440,7 @@ def student_data_preprocessiong(request):
         
         final_data = []
         subject_to_total_classes = {}
+      
         for key in subject_to_student_data.keys():
             current_row = ''
             current_row += key 
@@ -455,15 +456,29 @@ def student_data_preprocessiong(request):
             # f.writelines('\n' + current_row)
             final_data.append(current_row)
         
+        total_classes = []
+        for key,val in subject_to_total_classes.items():
+            total_classes.append(val)
+        
         final_first_row = 'Student Name'
         for col in first_row.split(','):
             if col.split(' ')[0] in subject_to_total_classes:
                 final_first_row = final_first_row + ',' + col +  '(' + str(subject_to_total_classes[col.split(' ')[0]]) + ')'
         f.writelines(final_first_row)
+
+        print(total_classes)
+
         for data in final_data :
-            f.writelines('\n' + data)
-        
-        print(subject_to_total_classes)
+            new_rows = data.split(',')
+            new_str_row = new_rows[0]
+            for i in range(1, len(new_rows)):
+                precent = (int(new_rows[i]) / total_classes[i - 1] ) * 100
+                new_str_row = new_str_row + ',' + str(precent) + '%'
+    
+            f.writelines('\n' + new_str_row)
+
+
+        # print(subject_to_total_classes)
            
     return first_row
   
