@@ -98,6 +98,7 @@ urlpatterns = [
     re_path(r'^external', TeacherViews.external,name="script"), #face recogntion url and func in Teachersview
     re_path(r'^internal', TeacherViews.internal, name="button"),
     path('student_info_data', TeacherViews.student_info_data, name='student_info_data'),
+    path('clear_csv_file',TeacherViews.clear_csv_file, name='clear_csv_file'),
 
     path('readcsv', TeacherViews.readcsv, name="readcsv"),
 

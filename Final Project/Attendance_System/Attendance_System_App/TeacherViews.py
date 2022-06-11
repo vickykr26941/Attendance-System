@@ -236,7 +236,6 @@ def teacher_feedback_save(request):
             messages.error(request, "Failed To Send Feedback")
             return HttpResponseRedirect(reverse("teacher_feedback"))
 
-
 # leave
 def student_leave_view1(request):
     leaves = LeaveReportStudents.objects.all()
@@ -313,8 +312,7 @@ def save_student_result(request):
     # print(student_name_list)
     # print(student_assignment_marks_list)
     # print(student_exam_marks_list)
-
-
+    
     ok = True
     for i in range(len(student_ids_list)):
         id = student_ids_list[i]
@@ -401,7 +399,16 @@ def external(request):
     # return HttpResponseRedirect("external")
     return render(request, 'teacher_template/teacher_take_attendance_face.html')
 
-
+def clear_csv_file(request):
+    path = BASE_DIR + '/Attendance.csv'
+    # path = '/home/vkkr125/programming/final_project/Final Project/Attendance_System/Attendance.csv'
+    file = open(path, 'w+')
+    file.close()
+    with open(path, 'r+') as f:
+        row = 'Name,' + 'Time,' + 'Date'
+        f.writelines(row)
+    return HttpResponseRedirect(reverse("teacher_take_attendance_face"))
+    
 #Using Pandas dataframe
 def internal(request):
     # Read the csv file in
