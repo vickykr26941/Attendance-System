@@ -60,8 +60,6 @@ Add Results
              </form>
             <!-- /.card -->
 
-
-
           </div>
           </div>
 
@@ -84,7 +82,26 @@ Add Results
             .done(function(response){
                 var json_data=JSON.parse(response);
                 console.log(json_data)
-                var div_data="<div class='form-group'><label>Student List</label><select class='student_list form-control' name='student_list'>";
+                var div_data = "<table class='table'>";
+                div_data += "<tr><th scope='col'>Student Id</th> <th>Student Name</th> <th>Assignment Marks</th> <th>Exam Marks</th></tr>";
+                
+                for(key in json_data){
+                  var current_student_id = 'student_list ' + json_data[key]['id'];
+                  var current_student_name_id = 'student_name_list ' + json_data[key]['id'];
+                  var current_student_assignment_marks_id = 'assignment_marks_list ' + json_data[key]['id'];
+                  var current_student_exam_marks_id = 'exam_marks_list ' + json_data[key]['id'];
+
+
+                  div_data += "<tr scope='row'>";
+                  div_data += "<td><input type='text' name='student_list' class='form-control' readonly='true' value="+ json_data[key]['id']+"></td>";
+                  div_data += "<td><input type='text' name='student_name_list' class='form-control' readonly='true' value="+ json_data[key]['name']+"></td>";
+                  div_data += "<td><input type='text' name='assignment_marks_list' class='form-control' placeholder='Assignment Marks'></td>";
+                  div_data += "<td><input type='text' name='exam_marks_list' class='form-control' placeholder='Exam Marks'></td>";
+                  div_data += " </tr>";
+                }
+                div_data += " </table>";
+    
+                /* var div_data="<div class='form-group'><label>Student List</label><select class='student_list form-control' name='student_list'>";
                 for(key in json_data)
                 {
                     div_data+="<option value='"+json_data[key]['id']+"'>ID : "+json_data[key]['id']+" : "+json_data[key]['name']+"</option>";
@@ -98,12 +115,12 @@ Add Results
                 div_data+="<div class='col-lg-6'>";
                 div_data+="<label> Exam Marks : </label><input type='text' name='exam_marks' class='form-control' placeholder='Exam Marks'>";
                 div_data+="</div>"
-                div_data+="</div></div>";
+                div_data+="</div></div>"; */
 
                 div_data+="<div class='form-group'>";
                 div_data+="<button id='save_attendance' class='btn btn-success btn-block' type='submit'>Save Result</button>";
                 div_data+="</div>";
-
+ 
                 $("#student_data").html(div_data);
 
             })
@@ -114,3 +131,8 @@ Add Results
     })
 </script>
 {% endblock custom_js %}
+
+
+
+
+
