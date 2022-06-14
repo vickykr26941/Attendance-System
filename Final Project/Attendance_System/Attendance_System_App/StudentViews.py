@@ -18,6 +18,7 @@ def student_home(request):
     subjects = Subjects.objects.filter(course_id=course).count()
     subjects_data = Subjects.objects.filter(course_id=course)
     session_obj = SessionYearModel.object.get(id=student_obj.session_year_id.id)
+    # student_name = student_obj.student_name
 
     subject_name = []
     data_present = []
@@ -32,11 +33,15 @@ def student_home(request):
         subject_name.append(subject.subject_name)
         data_present.append(attendance_present_count)
         data_absent.append(attendance_absent_count)
+    
+    context = {
+        "total_attendance": attendance_total, "attendance_absent": attendance_absent,
+        "attendance_present": attendance_present, "subjects": subjects, "data_name": subject_name,
+        "data1": data_present, "data2": data_absent,
+        "total_subjects" : len(subject_name)
+    }
 
-    return render(request, "student_template/student_home_template.html",
-                  {"total_attendance": attendance_total, "attendance_absent": attendance_absent,
-                   "attendance_present": attendance_present, "subjects": subjects, "data_name": subject_name,
-                   "data1": data_present, "data2": data_absent})
+    return render(request, "student_template/student_home_template.html", context)
 
 
 

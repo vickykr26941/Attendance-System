@@ -1,3 +1,4 @@
+from email import message
 import json
 from lib2to3.pytree import Base
 import os
@@ -420,7 +421,8 @@ def internal(request):
 
     # Assign to string
     #html_file = (df.to_html(classes='table table-striped'))
-    return render(request, 'teacher_template/teacher_take_attendance_face.html')
+    return HttpResponseRedirect(reverse("teacher_take_attendance_face"))
+    # return render(request, 'teacher_template/teacher_take_attendance_face.html')
     
 def readcsv(request):
     return render(request, 'teacher_template/Attendance.html')
@@ -551,3 +553,14 @@ def student_info_data(request):
     student_data_template = CUR_DIR + '/templates/teacher_template/student_info_data.html'
     df.to_html(student_data_template)
     return render(request, 'teacher_template/student_info_data.html')
+
+
+def save_face_attendance_data(request):
+
+
+    subject = request.POST.get('subject')
+    # read attendance.csv file,student fetch the students based on there name 
+    # ans save the result to the database
+    
+    messages.success(request, "Attendance Data Saved Successfully!!")
+    return HttpResponseRedirect(reverse('teacher_take_attendance_face'))

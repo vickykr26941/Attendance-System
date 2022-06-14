@@ -26,6 +26,10 @@
   <!-- summernote -->
   <link rel="stylesheet" href="{% static "plugins/summernote/summernote-bs4.css" %}">
   <!-- Google Font: Source Sans Pro -->
+  <style>
+    {% block inline_style %}{% endblock inline_style %}
+  </style>
+   
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     {% block custom_css %}{% endblock custom_css %}
   </head>

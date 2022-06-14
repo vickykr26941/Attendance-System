@@ -121,6 +121,7 @@ urlpatterns = [
     path('save_student_result', TeacherViews.save_student_result, name="save_student_result"),
     path('edit_student_result', EditResultViewClass.as_view(), name="edit_student_result"),
     path('fetch_result_student', TeacherViews.fetch_result_student, name="fetch_result_student"),
+    path('save_face_attendance_data', TeacherViews.save_face_attendance_data, name="save_face_attendance_data"),
 
     # <<<<<<<< Student URL Path >>>>>>>>>>
     path('student_home', StudentViews.student_home, name="student_home"),
